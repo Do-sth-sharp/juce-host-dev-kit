@@ -398,12 +398,30 @@ endforeach (TARGET ${JUCE_TARGET_LIST})
 # ============================
 foreach (TARGET ${JUCE_TARGET_LIST})
 if (NOT MSVC)
-	target_compile_options (${TARGET} PRIVATE
-			-pthread
-			-fvisibility=hidden
-			-fvisibility-inlines-hidden
-			"-Wa,-mbig-obj"
-	)
+	if (CMAKE_COMPILER_IS_GNUCXX)
+		include(CheckCXXCompilerFlag)
+		check_cxx_compiler_flag("-Wa,-mbig-obj" HAS_BIG_OBJ_FLAG)
+		if (HAS_BIG_OBJ_FLAG)
+			target_compile_options (${TARGET} PRIVATE
+					-pthread
+					-fvisibility=hidden
+					-fvisibility-inlines-hidden
+					"-Wa,-mbig-obj"
+			)
+		else () # "-Wa,-mbig-obj" is not supported by gcc on Linux
+			target_compile_options (${TARGET} PRIVATE
+					-pthread
+					-fvisibility=hidden
+					-fvisibility-inlines-hidden
+			)
+		endif ()
+	else () # "-Wa,-mbig-obj" is not supported by compilers other than gcc
+		target_compile_options (${TARGET} PRIVATE
+				-pthread
+				-fvisibility=hidden
+				-fvisibility-inlines-hidden
+		)
+	endif ()
 	if (NOT (("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang") AND WIN32))
 		target_compile_options (${TARGET} PRIVATE -fPIC)
 	endif ()
