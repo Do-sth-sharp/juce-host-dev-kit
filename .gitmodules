@@ -1,24 +1,24 @@
 [submodule "vst3sdk/base"]
 	path = vst3sdk/base
-	url = ../../steinbergmedia/vst3_base.git
+	url = git@github.com:steinbergmedia/vst3_base.git
 [submodule "vst3sdk/public.sdk"]
 	path = vst3sdk/public.sdk
-	url = ../../steinbergmedia/vst3_public_sdk.git
+	url = git@github.com:steinbergmedia/vst3_public_sdk.git
 [submodule "vst3sdk/pluginterfaces"]
 	path = vst3sdk/pluginterfaces
-	url = ../../steinbergmedia/vst3_pluginterfaces.git
+	url = git@github.com:steinbergmedia/vst3_pluginterfaces.git
 [submodule "vst2-sdk-for-vst3sdk"]
 	path = vst2-sdk-for-vst3sdk
-	url = ../../Do-sth-sharp/vst2-sdk-for-vst3sdk.git
+	url = git@github.com:Do-sth-sharp/vst2-sdk-for-vst3sdk.git
 [submodule "libMackieControl"]
 	path = libMackieControl
-	url = ../../Do-sth-sharp/libMackieControl.git
+	url = git@github.com:Do-sth-sharp/libMackieControl.git
 [submodule "ARA_SDK"]
 	path = ARA_SDK
-	url = https://github.com/Celemony/ARA_SDK.git
+	url = git@github.com:Celemony/ARA_SDK.git
 [submodule "JUCE"]
 	path = JUCE
-	url = https://github.com/Do-sth-sharp/JUCE-Fixed.git
+	url = git@github.com:Do-sth-sharp/JUCE-Fixed.git
 [submodule "ARAExtension"]
 	path = ARAExtension
-	url = https://github.com/Do-sth-sharp/ARAExtension.git
+	url = git@github.com:Do-sth-sharp/ARAExtension.git
