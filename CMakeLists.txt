@@ -8,7 +8,7 @@ if (APPLE)
 endif (APPLE)
 
 if (ANDROID)
-	set (CMAKE_SYSTEM_VERSION 29)
+	set(CMAKE_SYSTEM_VERSION 29)
 endif (ANDROID)
 
 project (juce-host-dev-kit VERSION 1.0.0 LANGUAGES ${LANG_LIST})
