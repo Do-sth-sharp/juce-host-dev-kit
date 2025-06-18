@@ -2,7 +2,12 @@ cmake_minimum_required (VERSION 3.22)
 
 string(REPLACE "\\" "/" CMAKE_ANDROID_NDK "${CMAKE_ANDROID_NDK}")
 
-project (juce-host-dev-kit VERSION 1.0.0 LANGUAGES C CXX OBJC OBJCXX)
+set (LANG_LIST C CXX)
+if (APPLE)
+	set (LANG_LIST ${LANG_LIST} OBJC OBJCXX)
+endif (APPLE)
+
+project (juce-host-dev-kit VERSION 1.0.0 LANGUAGES ${LANG_LIST})
 
 if (NOT DEFINED CMAKE_BUILD_TYPE)
 	set (CMAKE_BUILD_TYPE "Release"  CACHE STRING "Choose the type of build." FORCE)
