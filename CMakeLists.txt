@@ -7,6 +7,10 @@ if (APPLE)
 	set (LANG_LIST ${LANG_LIST} OBJC OBJCXX)
 endif (APPLE)
 
+if (ANDROID)
+	set (CMAKE_SYSTEM_VERSION 29)
+endif (ANDROID)
+
 project (juce-host-dev-kit VERSION 1.0.0 LANGUAGES ${LANG_LIST})
 
 if (NOT DEFINED CMAKE_BUILD_TYPE)
