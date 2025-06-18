@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.22)
 
 string(REPLACE "\\" "/" CMAKE_ANDROID_NDK "${CMAKE_ANDROID_NDK}")
 
-project (juce-host-dev-kit VERSION 1.0.0 LANGUAGES C CXX)
+project (juce-host-dev-kit VERSION 1.0.0 LANGUAGES C CXX OBJC OBJCXX)
 
 if (NOT DEFINED CMAKE_BUILD_TYPE)
 	set (CMAKE_BUILD_TYPE "Release"  CACHE STRING "Choose the type of build." FORCE)
@@ -322,38 +322,73 @@ set (JUCE_PRIVATE_INC_PATH
 # ============================
 # Target
 # ============================
-set (JUCE_AUDIO_SRC
-		"${JUCE_HEADER_PATH}/JuceHeader.h"
-		"${JUCE_HEADER_PATH}/include_juce_audio_basics.cpp"
-		"${JUCE_HEADER_PATH}/include_juce_audio_devices.cpp"
-		"${JUCE_HEADER_PATH}/include_juce_audio_formats.cpp"
-		"${JUCE_HEADER_PATH}/include_juce_audio_processors.cpp"
-		"${JUCE_HEADER_PATH}/include_juce_audio_utils.cpp"
-)
-set (JUCE_CORE_SRC
-		"${JUCE_HEADER_PATH}/JuceHeader.h"
-		"${JUCE_HEADER_PATH}/include_juce_core.cpp"
-		"${JUCE_HEADER_PATH}/include_juce_core_CompilationTime.cpp"
-		"${JUCE_HEADER_PATH}/include_juce_cryptography.cpp"
-		"${JUCE_HEADER_PATH}/include_juce_gui_basics.cpp"
-		"${JUCE_HEADER_PATH}/include_juce_gui_extra.cpp"
-		"${JUCE_HEADER_PATH}/include_juce_events.cpp"
-		"${JUCE_HEADER_PATH}/include_juce_data_structures.cpp"
-		"${JUCE_HEADER_PATH}/include_juce_graphics.cpp"
-		"${JUCE_HEADER_PATH}/include_juce_graphics_Harfbuzz.cpp"
-		"${JUCE_HEADER_PATH}/include_juce_graphics_Sheenbidi.c"
-		"${JUCE_HEADER_PATH}/include_juce_osc.cpp"
-		"${JUCE_HEADER_PATH}/include_juce_box2d.cpp"
-		"${JUCE_HEADER_PATH}/include_juce_opengl.cpp"
-		"${JUCE_HEADER_PATH}/include_juce_analytics.cpp"
-		"${JUCE_HEADER_PATH}/include_juce_product_unlocking.cpp"
-		"${JUCE_HEADER_PATH}/include_juce_video.cpp"
-		"${JUCE_HEADER_PATH}/include_juce_animation.cpp"
-)
-set (JUCE_DSP_SRC
-		"${JUCE_HEADER_PATH}/JuceHeader.h"
-		"${JUCE_HEADER_PATH}/include_juce_dsp.cpp"
-)
+if (NOT APPLE)
+	set (JUCE_AUDIO_SRC
+			"${JUCE_HEADER_PATH}/JuceHeader.h"
+			"${JUCE_HEADER_PATH}/include_juce_audio_basics.cpp"
+			"${JUCE_HEADER_PATH}/include_juce_audio_devices.cpp"
+			"${JUCE_HEADER_PATH}/include_juce_audio_formats.cpp"
+			"${JUCE_HEADER_PATH}/include_juce_audio_processors.cpp"
+			"${JUCE_HEADER_PATH}/include_juce_audio_utils.cpp"
+	)
+	set (JUCE_CORE_SRC
+			"${JUCE_HEADER_PATH}/JuceHeader.h"
+			"${JUCE_HEADER_PATH}/include_juce_core.cpp"
+			"${JUCE_HEADER_PATH}/include_juce_core_CompilationTime.cpp"
+			"${JUCE_HEADER_PATH}/include_juce_cryptography.cpp"
+			"${JUCE_HEADER_PATH}/include_juce_gui_basics.cpp"
+			"${JUCE_HEADER_PATH}/include_juce_gui_extra.cpp"
+			"${JUCE_HEADER_PATH}/include_juce_events.cpp"
+			"${JUCE_HEADER_PATH}/include_juce_data_structures.cpp"
+			"${JUCE_HEADER_PATH}/include_juce_graphics.cpp"
+			"${JUCE_HEADER_PATH}/include_juce_graphics_Harfbuzz.cpp"
+			"${JUCE_HEADER_PATH}/include_juce_graphics_Sheenbidi.c"
+			"${JUCE_HEADER_PATH}/include_juce_osc.cpp"
+			"${JUCE_HEADER_PATH}/include_juce_box2d.cpp"
+			"${JUCE_HEADER_PATH}/include_juce_opengl.cpp"
+			"${JUCE_HEADER_PATH}/include_juce_analytics.cpp"
+			"${JUCE_HEADER_PATH}/include_juce_product_unlocking.cpp"
+			"${JUCE_HEADER_PATH}/include_juce_video.cpp"
+			"${JUCE_HEADER_PATH}/include_juce_animation.cpp"
+	)
+	set (JUCE_DSP_SRC
+			"${JUCE_HEADER_PATH}/JuceHeader.h"
+			"${JUCE_HEADER_PATH}/include_juce_dsp.cpp"
+	)
+else (NOT APPLE)
+	set (JUCE_AUDIO_SRC
+			"${JUCE_HEADER_PATH}/JuceHeader.h"
+			"${JUCE_HEADER_PATH}/include_juce_audio_basics.mm"
+			"${JUCE_HEADER_PATH}/include_juce_audio_devices.mm"
+			"${JUCE_HEADER_PATH}/include_juce_audio_formats.mm"
+			"${JUCE_HEADER_PATH}/include_juce_audio_processors.mm"
+			"${JUCE_HEADER_PATH}/include_juce_audio_utils.mm"
+	)
+	set (JUCE_CORE_SRC
+			"${JUCE_HEADER_PATH}/JuceHeader.h"
+			"${JUCE_HEADER_PATH}/include_juce_core.mm"
+			"${JUCE_HEADER_PATH}/include_juce_core_CompilationTime.cpp"
+			"${JUCE_HEADER_PATH}/include_juce_cryptography.mm"
+			"${JUCE_HEADER_PATH}/include_juce_gui_basics.mm"
+			"${JUCE_HEADER_PATH}/include_juce_gui_extra.mm"
+			"${JUCE_HEADER_PATH}/include_juce_events.mm"
+			"${JUCE_HEADER_PATH}/include_juce_data_structures.mm"
+			"${JUCE_HEADER_PATH}/include_juce_graphics.mm"
+			"${JUCE_HEADER_PATH}/include_juce_graphics_Harfbuzz.cpp"
+			"${JUCE_HEADER_PATH}/include_juce_graphics_Sheenbidi.c"
+			"${JUCE_HEADER_PATH}/include_juce_osc.cpp"
+			"${JUCE_HEADER_PATH}/include_juce_box2d.cpp"
+			"${JUCE_HEADER_PATH}/include_juce_opengl.mm"
+			"${JUCE_HEADER_PATH}/include_juce_analytics.cpp"
+			"${JUCE_HEADER_PATH}/include_juce_product_unlocking.mm"
+			"${JUCE_HEADER_PATH}/include_juce_video.mm"
+			"${JUCE_HEADER_PATH}/include_juce_animation.cpp"
+	)
+	set (JUCE_DSP_SRC
+			"${JUCE_HEADER_PATH}/JuceHeader.h"
+			"${JUCE_HEADER_PATH}/include_juce_dsp.mm"
+	)
+endif (NOT APPLE)
 
 set (JUCE_TARGET_LIST "")
 if (NOT ANDROID)
@@ -557,19 +592,32 @@ if (NOT MSVC)
 			"-framework AudioToolbox"
 			"-framework AVFoundation"
 			"-framework AVKit"
-			"-framework Carbon"
-			"-framework Cocoa"
 			"-framework CoreAudio"
 			"-framework CoreAudioKit"
 			"-framework CoreMedia"
 			"-framework CoreMIDI"
-			"-framework DiscRecording"
 			"-framework Foundation"
 			"-framework IOKit"
-			"-framework OpenGL"
 			"-framework QuartzCore"
 			"-framework WebKit"
 		)
+		if (IOS)
+			target_link_libraries (${TARGET} PRIVATE
+				"-framework OpenGLES"
+				"-framework CoreGraphics"
+				"-framework CoreText"
+				"-framework CoreImage"
+				"-framework UIKit"
+				"-framework MobileCoreServices"
+			)
+		else (IOS)
+			target_link_libraries (${TARGET} PRIVATE
+				"-framework Carbon"
+				"-framework Cocoa"
+				"-framework DiscRecording"
+				"-framework OpenGL"
+			)
+		endif (IOS)
 	elseif (ANDROID)
 		target_link_libraries (${TARGET} PRIVATE
 			${LOG_LIB}
