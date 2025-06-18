@@ -1,4 +1,7 @@
-﻿cmake_minimum_required (VERSION 3.22)
+cmake_minimum_required (VERSION 3.22)
+
+string(REPLACE "\\" "/" CMAKE_ANDROID_NDK "${CMAKE_ANDROID_NDK}")
+
 project (juce-host-dev-kit VERSION 1.0.0 LANGUAGES C CXX)
 
 if (NOT DEFINED CMAKE_BUILD_TYPE)
@@ -137,7 +140,7 @@ endif (NOT DEFINED JUCE_USE_LAME_AUDIO_FORMAT)
 # Module Path
 # ============================
 set (JUCE_INC_PATH "${JUCE_PATH}/modules")
-if (UNIX AND NOT APPLE)
+if (UNIX AND NOT APPLE AND NOT ANDROID)
 	find_package (PkgConfig REQUIRED)
 	pkg_search_module (ALSA REQUIRED alsa)
 	pkg_search_module (FREETYPE2 REQUIRED freetype2)
@@ -157,7 +160,91 @@ if (UNIX AND NOT APPLE)
 	find_library (DL dl)
 	find_library (PTHREAD pthread)
 	find_library (GL GL)
-endif (UNIX AND NOT APPLE)
+endif (UNIX AND NOT APPLE AND NOT ANDROID)
+
+if (ANDROID)
+	set(OBOE_DIR "${JUCE_INC_PATH}/juce_audio_devices/native/oboe")
+	set (JUCE_OBOE_SRC_FIX
+		${OBOE_DIR}/src/aaudio/AAudioLoader.cpp
+		${OBOE_DIR}/src/aaudio/AudioStreamAAudio.cpp
+		${OBOE_DIR}/src/common/AdpfWrapper.cpp
+		${OBOE_DIR}/src/common/AudioSourceCaller.cpp
+		${OBOE_DIR}/src/common/AudioStream.cpp
+		${OBOE_DIR}/src/common/AudioStreamBuilder.cpp
+		${OBOE_DIR}/src/common/DataConversionFlowGraph.cpp
+		${OBOE_DIR}/src/common/FilterAudioStream.cpp
+		${OBOE_DIR}/src/common/FixedBlockAdapter.cpp
+		${OBOE_DIR}/src/common/FixedBlockReader.cpp
+		${OBOE_DIR}/src/common/FixedBlockWriter.cpp
+		${OBOE_DIR}/src/common/LatencyTuner.cpp
+		${OBOE_DIR}/src/common/OboeExtensions.cpp
+		${OBOE_DIR}/src/common/SourceFloatCaller.cpp
+		${OBOE_DIR}/src/common/SourceI16Caller.cpp
+		${OBOE_DIR}/src/common/SourceI24Caller.cpp
+		${OBOE_DIR}/src/common/SourceI32Caller.cpp
+		${OBOE_DIR}/src/common/Utilities.cpp
+		${OBOE_DIR}/src/common/QuirksManager.cpp
+		${OBOE_DIR}/src/fifo/FifoBuffer.cpp
+		${OBOE_DIR}/src/fifo/FifoController.cpp
+		${OBOE_DIR}/src/fifo/FifoControllerBase.cpp
+		${OBOE_DIR}/src/fifo/FifoControllerIndirect.cpp
+		${OBOE_DIR}/src/flowgraph/FlowGraphNode.cpp
+		${OBOE_DIR}/src/flowgraph/ChannelCountConverter.cpp
+		${OBOE_DIR}/src/flowgraph/ClipToRange.cpp
+		${OBOE_DIR}/src/flowgraph/Limiter.cpp
+		${OBOE_DIR}/src/flowgraph/ManyToMultiConverter.cpp
+		${OBOE_DIR}/src/flowgraph/MonoBlend.cpp
+		${OBOE_DIR}/src/flowgraph/MonoToMultiConverter.cpp
+		${OBOE_DIR}/src/flowgraph/MultiToManyConverter.cpp
+		${OBOE_DIR}/src/flowgraph/MultiToMonoConverter.cpp
+		${OBOE_DIR}/src/flowgraph/RampLinear.cpp
+		${OBOE_DIR}/src/flowgraph/SampleRateConverter.cpp
+		${OBOE_DIR}/src/flowgraph/SinkFloat.cpp
+		${OBOE_DIR}/src/flowgraph/SinkI16.cpp
+		${OBOE_DIR}/src/flowgraph/SinkI24.cpp
+		${OBOE_DIR}/src/flowgraph/SinkI32.cpp
+		${OBOE_DIR}/src/flowgraph/SourceFloat.cpp
+		${OBOE_DIR}/src/flowgraph/SourceI16.cpp
+		${OBOE_DIR}/src/flowgraph/SourceI24.cpp
+		${OBOE_DIR}/src/flowgraph/SourceI32.cpp
+		${OBOE_DIR}/src/flowgraph/resampler/IntegerRatio.cpp
+		${OBOE_DIR}/src/flowgraph/resampler/LinearResampler.cpp
+		${OBOE_DIR}/src/flowgraph/resampler/MultiChannelResampler.cpp
+		${OBOE_DIR}/src/flowgraph/resampler/PolyphaseResampler.cpp
+		${OBOE_DIR}/src/flowgraph/resampler/PolyphaseResamplerMono.cpp
+		${OBOE_DIR}/src/flowgraph/resampler/PolyphaseResamplerStereo.cpp
+		${OBOE_DIR}/src/flowgraph/resampler/SincResampler.cpp
+		${OBOE_DIR}/src/flowgraph/resampler/SincResamplerStereo.cpp
+		${OBOE_DIR}/src/opensles/AudioInputStreamOpenSLES.cpp
+		${OBOE_DIR}/src/opensles/AudioOutputStreamOpenSLES.cpp
+		${OBOE_DIR}/src/opensles/AudioStreamBuffered.cpp
+		${OBOE_DIR}/src/opensles/AudioStreamOpenSLES.cpp
+		${OBOE_DIR}/src/opensles/EngineOpenSLES.cpp
+		${OBOE_DIR}/src/opensles/OpenSLESUtilities.cpp
+		${OBOE_DIR}/src/opensles/OutputMixerOpenSLES.cpp
+		${OBOE_DIR}/src/common/StabilizedCallback.cpp
+		${OBOE_DIR}/src/common/Trace.cpp
+		${OBOE_DIR}/src/common/Version.cpp
+	)
+
+	set (JUCE_ANDROID_SRC_FIX
+		${CMAKE_ANDROID_NDK}/sources/android/cpufeatures/cpu-features.c
+	)
+
+	set (JUCE_INC_LIST
+		${OBOE_DIR}/include
+		${OBOE_DIR}/src
+		${CMAKE_ANDROID_NDK}/sysroot/usr/include
+		${CMAKE_ANDROID_NDK}/sysroot/usr/include/${CMAKE_ANDROID_ARCH}-linux-android
+		${CMAKE_ANDROID_NDK}/sources/android/cpufeatures
+	)
+
+	find_library (LOG_LIB log)
+	find_library (ANDROIOD_LIB android)
+	find_library (GLESV2_LIB GLESv2)
+	find_library (EGL_LIB EGL)
+	find_library (OPENSLES_LIB OpenSLES)
+endif (ANDROID)
 
 if (JUCE_ASIO)
 	if (DEFINED ASIO_SDK_PATH)
@@ -269,18 +356,26 @@ set (JUCE_DSP_SRC
 )
 
 set (JUCE_TARGET_LIST "")
-add_library (juce-core SHARED ${JUCE_CORE_SRC})
-list (APPEND JUCE_TARGET_LIST juce-core)
+if (NOT ANDROID)
+	# No implementation of juce::getAndroidRealtimeThreadFactory()
+	add_library (juce-core SHARED ${JUCE_CORE_SRC} ${JUCE_ANDROID_SRC_FIX})
+	list (APPEND JUCE_TARGET_LIST juce-core)
+endif (NOT ANDROID)
 if (NOT MINGW)
 	# Too many exported symbols to MinGW ld.exe
 	add_library (juce-full SHARED ${JUCE_CORE_SRC} ${JUCE_DSP_SRC} ${JUCE_AUDIO_SRC}
-			${JUCE_LV2_SRC_FIX} ${JUCE_ARA_SRC_FIX} ${MACKIE_SRC})
+			${JUCE_LV2_SRC_FIX} ${JUCE_ARA_SRC_FIX} ${MACKIE_SRC} ${JUCE_OBOE_SRC_FIX}
+			${JUCE_ANDROID_SRC_FIX})
 	list (APPEND JUCE_TARGET_LIST juce-full)
 endif (NOT MINGW)
-add_library (juce-core-static STATIC ${JUCE_CORE_SRC})
-list (APPEND JUCE_TARGET_LIST juce-core-static)
+if (NOT ANDROID)
+	# No implementation of juce::getAndroidRealtimeThreadFactory()
+	add_library (juce-core-static STATIC ${JUCE_CORE_SRC} ${JUCE_ANDROID_SRC_FIX})
+	list (APPEND JUCE_TARGET_LIST juce-core-static)
+endif (NOT ANDROID)
 add_library (juce-full-static STATIC ${JUCE_CORE_SRC} ${JUCE_DSP_SRC} ${JUCE_AUDIO_SRC}
-		${JUCE_LV2_SRC_FIX} ${JUCE_ARA_SRC_FIX} ${MACKIE_SRC})
+		${JUCE_LV2_SRC_FIX} ${JUCE_ARA_SRC_FIX} ${MACKIE_SRC} ${JUCE_OBOE_SRC_FIX}
+		${JUCE_ANDROID_SRC_FIX})
 list (APPEND JUCE_TARGET_LIST juce-full-static)
 
 set_source_files_properties ("${JUCE_HEADER_PATH}/JuceHeader.h" PROPERTIES HEADER_FILE_ONLY TRUE)
@@ -306,6 +401,7 @@ set (JUCE_DEBUG_DEF "$<$<CONFIG:Debug>:DEBUG=1>" "$<$<CONFIG:Debug>:_DEBUG=1>" "
 set (JUCE_LINUX_DEF "LINUX=1")
 set (JUCE_WIN_DEF "")
 set (JUCE_OSX_DEF "")
+set (JUCE_ANDROID_DEF "JUCE_ANDROID=1")
 
 set (JUCE_MODULE_DEF 
 	#"JUCE_DISPLAY_SPLASH_SCREEN=$<IF:$<BOOL:${JUCE_DISPLAY_SPLASH_SCREEN}>,1,0>"
@@ -365,10 +461,12 @@ foreach (TARGET ${JUCE_TARGET_LIST})
 
 	if (WIN32)
 		target_compile_definitions (${TARGET} PUBLIC ${JUCE_WIN_DEF})
-	elseif (UNIX AND NOT APPLE)
+	elseif (UNIX AND NOT APPLE AND NOT ANDROID)
 		target_compile_definitions (${TARGET} PUBLIC ${JUCE_LINUX_DEF})
 	elseif (APPLE)
 		target_compile_definitions (${TARGET} PUBLIC ${JUCE_OSX_DEF})
+	elseif (ANDROID)
+		target_compile_definitions (${TARGET} PUBLIC ${JUCE_ANDROID_DEF})
 	endif ()
 
 	target_compile_definitions (${TARGET} PUBLIC ${JUCE_MODULE_DEF})
@@ -386,7 +484,10 @@ foreach (TARGET ${JUCE_TARGET_LIST})
 		target_compile_definitions (${TARGET} PUBLIC "JUCE_USE_DIRECTWRITE=0")
 	endif (GNU OR MINGW)
 
-	target_compile_definitions (${TARGET} PUBLIC "JUCE_MODAL_LOOPS_PERMITTED=1" "JUCE_CATCH_UNHANDLED_EXCEPTIONS=1")
+	if (NOT ANDROID)
+		target_compile_definitions (${TARGET} PUBLIC "JUCE_MODAL_LOOPS_PERMITTED=1")
+	endif (NOT ANDROID)
+	target_compile_definitions (${TARGET} PUBLIC "JUCE_CATCH_UNHANDLED_EXCEPTIONS=1")
 
 	if (JUCE_DISABLE_LEAK_DETECTOR)
 		target_compile_definitions (${TARGET} PUBLIC "JUCE_CHECK_MEMORY_LEAKS=0")
@@ -440,7 +541,7 @@ if (NOT MSVC)
 		if (NOT ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang"))
 			target_link_libraries (${TARGET} PRIVATE -s)
 		endif ()
-	elseif (UNIX AND NOT APPLE)
+	elseif (UNIX AND NOT APPLE AND NOT ANDROID)
 		target_link_libraries (${TARGET} PRIVATE
 			${RT}
 			${DL}
@@ -468,6 +569,14 @@ if (NOT MSVC)
 			"-framework OpenGL"
 			"-framework QuartzCore"
 			"-framework WebKit"
+		)
+	elseif (ANDROID)
+		target_link_libraries (${TARGET} PRIVATE
+			${LOG_LIB}
+			${ANDROIOD_LIB}
+			${GLESV2_LIB}
+			${EGL_LIB}
+			${OPENSLES_LIB}
 		)
 	endif ()
 else (NOT MSVC)
