@@ -152,6 +152,7 @@ if (UNIX AND NOT APPLE AND NOT ANDROID)
 	pkg_search_module (LIBCURL REQUIRED libcurl)
 	pkg_search_module (WEBKIT2GTK-4.0 REQUIRED webkit2gtk-4.0)
 	pkg_search_module (GTK+-X11-3.0 REQUIRED gtk+-x11-3.0)
+	pkg_search_module(FONTCONFIG REQUIRED fontconfig)
 
 	set (JUCE_INC_LIST
 		${ALSA_INCLUDE_DIRS}
@@ -159,6 +160,7 @@ if (UNIX AND NOT APPLE AND NOT ANDROID)
 		${LIBCURL_INCLUDE_DIRS}
 		${WEBKIT2GTK-4.0_INCLUDE_DIRS}
 		${GTK+-X11-3.0_INCLUDE_DIRS}
+		${FONTCONFIG_INCLUDE_DIRS}
 	)
 
 	find_library (RT rt)
@@ -591,6 +593,7 @@ if (NOT MSVC)
 			${ALSA_LIBRARIES}
 			${FREETYPE2_LIBRARIES}
 			${LIBCURL_LIBRARIES}
+			${FONTCONFIG_LIBRARIES}
 		)
 	elseif (APPLE)
 		target_link_libraries (${TARGET} PRIVATE
