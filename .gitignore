@@ -34,6 +34,7 @@
 # IDE Temp
 .vs/**
 .idea/**
+.vscode/**
 
 # Output Directory
 [Oo]ut/**
