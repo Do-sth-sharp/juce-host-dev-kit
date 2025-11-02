@@ -6,3 +6,5 @@
 */
 
 #include <juce_dsp/juce_dsp.mm>
+
+#include "ExportFix/dsp.cpp"
