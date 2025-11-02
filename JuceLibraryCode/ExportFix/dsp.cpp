@@ -33,6 +33,7 @@ template class JUCE_API juce::dsp::StateVariableTPTFilter<float>;
 
 template class JUCE_API juce::dsp::LogRampedValue<float>;
 template class JUCE_API juce::dsp::LookupTable<float>;
+template class JUCE_API juce::dsp::LookupTableTransform<float>;
 template class JUCE_API juce::dsp::Matrix<float>;
 template class JUCE_API juce::dsp::Phase<float>;
 template class JUCE_API juce::dsp::Polynomial<float>;
