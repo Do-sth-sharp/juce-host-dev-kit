@@ -609,6 +609,7 @@ if (NOT MSVC)
 			"-framework IOKit"
 			"-framework QuartzCore"
 			"-framework WebKit"
+			"-framework Security"
 		)
 		if (IOS)
 			target_link_libraries (${TARGET} PRIVATE
