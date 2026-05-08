@@ -150,7 +150,7 @@ if (UNIX AND NOT APPLE AND NOT ANDROID)
 	pkg_search_module (ALSA REQUIRED alsa)
 	pkg_search_module (FREETYPE2 REQUIRED freetype2)
 	pkg_search_module (LIBCURL REQUIRED libcurl)
-	pkg_search_module (WEBKIT2GTK-4.0 REQUIRED webkit2gtk-4.0)
+	pkg_search_module (WEBKIT2GTK REQUIRED  webkit2gtk-4.1 webkit2gtk-4.0)
 	pkg_search_module (GTK+-X11-3.0 REQUIRED gtk+-x11-3.0)
 	pkg_search_module(FONTCONFIG REQUIRED fontconfig)
 
@@ -158,7 +158,7 @@ if (UNIX AND NOT APPLE AND NOT ANDROID)
 		${ALSA_INCLUDE_DIRS}
 		${FREETYPE2_INCLUDE_DIRS}
 		${LIBCURL_INCLUDE_DIRS}
-		${WEBKIT2GTK-4.0_INCLUDE_DIRS}
+		${WEBKIT2GTK_INCLUDE_DIRS}
 		${GTK+-X11-3.0_INCLUDE_DIRS}
 		${FONTCONFIG_INCLUDE_DIRS}
 	)
